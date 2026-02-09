@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.LimelightBack;
 import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.utils.Constants.HubAlignConstants;
 import frc.robot.utils.LimelightHelpers.LimelightTarget_Retro;
@@ -27,7 +28,7 @@ public class AlignToHubBasisVectorWithTranslation extends Command {
     private double lateralErrorThreshold, depthErrorThreshold,
             rotationalErrorThreshold, // determines when error is small enough
             rotationalLowerPThreshold, lateralLowerPThreshold; // determines which rotationalP to use
-    private Limelight frontRLimelight;
+    private Limelight backLimelight;
     private double tagAngle, desiredX, desiredY;
     private Translation2d desiredPose;
     private double rotationalError, lateralError, depthError;
@@ -35,7 +36,7 @@ public class AlignToHubBasisVectorWithTranslation extends Command {
 
     public AlignToHubBasisVectorWithTranslation() {
         drivetrain = Drivetrain.getInstance();
-        frontRLimelight = LimelightFrontRight.getInstance();
+        backLimelight = LimelightBack.getInstance();
 
         rotationalP = HubAlignConstants.kRotationalP;
         rotationalI = HubAlignConstants.kRotationalI;
@@ -80,14 +81,15 @@ public class AlignToHubBasisVectorWithTranslation extends Command {
         // depthPIDController = new PIDController(depthP, depthI, depthD);
 
         addRequirements(drivetrain);
-        SmartDashboard.putNumber("Target April Tag ID", 19);
+        SmartDashboard.putNumber("Target April Tag ID", 0);
     }
 
     @Override
     public void initialize() {
-        Pose2d tagPose = Limelight.getAprilTagPose((int) SmartDashboard.getNumber("Target April Tag ID", 19));
-        tagAngle = tagPose.getRotation().getRadians();
-        desiredX = 0;
+        Pose2d tagPose = Limelight.getAprilTagPose((int) SmartDashboard.getNumber("Target April Tag ID", 0));
+        //tagAngle = tagPose.getRotation().getRadians();
+        tagAngle = 180;
+        desiredX = tagPose.getX();
 
         // rotationalP = SmartDashboard.getNumber("rotationalP", 0);
         // rotationalI = SmartDashboard.getNumber("rotationalI", 0);
@@ -125,11 +127,10 @@ public class AlignToHubBasisVectorWithTranslation extends Command {
             SmartDashboard.putNumber("rotational", rotation);
             rotation = rotationalPIDController.calculate(rotationalError) + Math.signum(rotationalError) * rotationalFF;
         }
-
+        
         lateralPIDController.setP(lateralP);
         lateralPIDController.setI(lateralI);
         lateralPIDController.setD(lateralD);
-        //double lateral = 0;
 
         if (Math.abs(lateralError) > lateralLowerPThreshold) {
             lateralPIDController.setP(lateralP);
@@ -137,13 +138,16 @@ public class AlignToHubBasisVectorWithTranslation extends Command {
             lateralPIDController.setP(lateralLowerP);
         }
 
-        lateralError = frontRLimelight.getTx() - desiredX;
+        // Optional<Pose2d> estimatedPoseOptional = backLimelight.getEstimatedPoseMT2();
+        // Pose2d estimatedPose = estimatedPoseOptional.get();
+        //lateralError = estimatedPose.getX() - desiredX;
+        lateralError = backLimelight.getTx();
         if (Math.abs(lateralError) > lateralErrorThreshold) {
             SmartDashboard.putNumber("lateral", lateral);
             lateral = lateralPIDController.calculate(lateralError) + Math.signum(lateralError) * lateralFF;
         }
 
-        drivetrain.drive(new Translation2d(0, lateral), rotation, true, null);
+        drivetrain.drive(new Translation2d(0, lateral), 0, true, null);
     }
 
     @Override
