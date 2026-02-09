@@ -30,9 +30,9 @@ public final class Constants {
         public static final double kRotationalP = 0.1;
         public static final double kRotationalI = 0;
         public static final double kRotationalD = 0;
-        public static final double kRotationLowerP = 0.06;
-        public static final double kRotationalErrorThreshold = 0.3;
-        public static final double kRotationLowerPThreshold = 1.5;
+        public static final double kRotationLowerP = 0.04;
+        public static final double kRotationalErrorThreshold = 0.5;
+        public static final double kRotationLowerPThreshold = 1.3;
         public static final double kRotationalFF = 0;
 
         public static final double kLateralP = 0;
