@@ -24,7 +24,7 @@ import frc.robot.commands.AlignToBarge;
 import frc.robot.commands.AlignToCage;
 import frc.robot.commands.AlignToHPBasisVector;
 import frc.robot.commands.AlignToHubBasisVector;
-import frc.robot.commands.AlignToHubBasisVectorTranslation;
+import frc.robot.commands.AlignToHubBasisVectorWithTranslation;
 import frc.robot.commands.AlignToProcessor;
 import frc.robot.commands.AlignToReefBasisVector;
 import frc.robot.commands.DriveToPoint;
@@ -70,17 +70,22 @@ public class DriverOI {
 
         controller = new PS4Controller(0);
 
+        Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
+        squareButton.whileTrue(new AlignToHubBasisVector());
+
+        Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
+        triangleButton.whileTrue(new AlignToHubBasisVectorWithTranslation());
+       
         Trigger PSButton = new JoystickButton(controller, PS4Controller.Button.kPS.value);
         PSButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance().resetGyro()));
-
+ /*
         Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.whileTrue(new AlignToHubBasisVector());
         // squareButton.onTrue(new ConditionalCommand(
         //     new TwitchClimb(false),
-        //     new InstantCommand(() -> {
+        //     new InstantCommand(() -> { 
         //         if (Arrays.asList(SuperstructureState.ALGAE_LOLLIPOP_INTAKE).contains(superstructure.getCurrentState()))
         //             superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE);
         //         else
@@ -103,7 +108,6 @@ public class DriverOI {
         );
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
-        triangleButton.whileTrue(new AlignToHubBasisVectorTranslation());
         // triangleButton.whileTrue(new SequentialCommandGroup(
         //     new DriveToPoint(6.953, 2.856, 120.0, 0.5),
         //     new AlignToReefBasisVector(
@@ -223,6 +227,7 @@ public class DriverOI {
 
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
         shareButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_ALGAE)));
+        */
     }
 
     public boolean bothBumpersHeld() {

@@ -147,7 +147,7 @@ public class Autonomous {
             new WaitCommand(.5),
             new AutoDriveCommand(
                 List.of(
-                    new Pose2d(0.960, 6.008, Rotation2d.fromDegrees(-159.829)),
+                    new Pose2d(0.960, 6.008, Rotation2d.fromDegrees(-159.829)),                    
                     new Pose2d(2.448, 3.550, Rotation2d.fromDegrees(-83.367)),
                     new Pose2d(0.791, 1.053, Rotation2d.fromDegrees(92.651)),
                     new Pose2d(1.076, 3.162, Rotation2d.fromDegrees(95.631))
