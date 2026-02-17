@@ -200,6 +200,7 @@ public class Autonomous {
 
             new AutoDriveCommand(
                 List.of(
+                    new Pose2d(1.048, 0.622, Rotation2d.fromDegrees(180)),
                     new Pose2d(1.048, 3.048, Rotation2d.fromDegrees(114.544))
                 ),
                 new PathConstraints(1, 1, 3 * Math.PI, 4* Math.PI),
@@ -250,7 +251,8 @@ public class Autonomous {
             }),
             new AutoDriveCommand(
                 List.of(
-                    new Pose2d(3.560, 5.853, Rotation2d.fromDegrees(180))
+                    new Pose2d(3.560, 5.853, Rotation2d.fromDegrees(180)),
+                    new Pose2d(1.400, 5.950, Rotation2d.fromDegrees(0))
                 ),
                 new PathConstraints(1.5, 1.5, 3 * Math.PI, 4 * Math.PI),
 
@@ -277,6 +279,7 @@ public class Autonomous {
 
             new AutoDriveCommand(
                 List.of(
+                    new Pose2d(0.95, 0.613, Rotation2d.fromDegrees(92.651)),
                     new Pose2d(1.063, 2.748, Rotation2d.fromDegrees(95.631))
                     
                 ),
